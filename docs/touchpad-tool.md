@@ -8,7 +8,7 @@
 
 ## 检索过程
 
-1. `MusicCatalog.same_song_candidates()` 取得当前可信单元，再收集同 carrier 的其他允许单元。
+1. `Catalog.same_song_candidates()` 取得当前可信单元，再收集同 carrier 的其他允许单元。
 2. 无查询条件时，当前单元在首位，后面列出所有内部替代单元。
 3. 有结构化条件时，使用 `include_playback_unit_ids` 限定内部集合，`top_k` 等于内部范围大小，在完整范围内重新排名。
 4. `project_tool_candidates()` 用可信 Catalog 补全画像，并保留原检索返回的排名、评分和匹配证据。
