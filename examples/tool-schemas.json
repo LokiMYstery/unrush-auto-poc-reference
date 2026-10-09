@@ -1,0 +1,896 @@
+{
+  "snapshotDate": "2026-10-09",
+  "note": "Generated from pure schema functions. submit_selection enum uses illustrative IDs, not a production catalog.",
+  "setEnergyGoal": {
+    "type": "function",
+    "name": "set_energy_goal",
+    "description": "Set one musical energy intention, not a health measurement.",
+    "parameters": {
+      "type": "object",
+      "properties": {
+        "energyGoal": {
+          "type": "string",
+          "enum": [
+            "boost",
+            "maintain",
+            "lower"
+          ]
+        },
+        "assessment": {
+          "type": "string",
+          "description": "One brief context-aware musical energy direction; qualitative body stress only, no scores or current-song announcement.",
+          "maxLength": 240
+        }
+      },
+      "required": [
+        "energyGoal",
+        "assessment"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "withTouchpad": [
+    {
+      "type": "function",
+      "name": "same_song_profile_search",
+      "description": "Search the current carrier song's complete nine logical Touchpad tracks. Optional profile criteria rank this internal set; no criteria returns current first plus all alternatives. Ordinary songs return their sole unit.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "nameQuery": {
+            "type": "string"
+          },
+          "tagPreferences": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "tagId": {
+                  "type": "string"
+                },
+                "importance": {
+                  "type": "number",
+                  "minimum": 0,
+                  "maximum": 1
+                }
+              },
+              "required": [
+                "tagId",
+                "importance"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "axisTargets": {
+            "type": "object",
+            "properties": {
+              "arousal": {
+                "type": "object",
+                "properties": {
+                  "target": {
+                    "type": "number",
+                    "minimum": 1,
+                    "maximum": 5
+                  },
+                  "tolerance": {
+                    "type": "number",
+                    "exclusiveMinimum": 0,
+                    "maximum": 4
+                  }
+                },
+                "required": [
+                  "target",
+                  "tolerance"
+                ],
+                "additionalProperties": false
+              },
+              "rhythmicDrive": {
+                "type": "object",
+                "properties": {
+                  "target": {
+                    "type": "number",
+                    "minimum": 1,
+                    "maximum": 5
+                  },
+                  "tolerance": {
+                    "type": "number",
+                    "exclusiveMinimum": 0,
+                    "maximum": 4
+                  }
+                },
+                "required": [
+                  "target",
+                  "tolerance"
+                ],
+                "additionalProperties": false
+              },
+              "attentionCapture": {
+                "type": "object",
+                "properties": {
+                  "target": {
+                    "type": "number",
+                    "minimum": 1,
+                    "maximum": 5
+                  },
+                  "tolerance": {
+                    "type": "number",
+                    "exclusiveMinimum": 0,
+                    "maximum": 4
+                  }
+                },
+                "required": [
+                  "target",
+                  "tolerance"
+                ],
+                "additionalProperties": false
+              },
+              "globalStability": {
+                "type": "object",
+                "properties": {
+                  "target": {
+                    "type": "number",
+                    "minimum": 1,
+                    "maximum": 5
+                  },
+                  "tolerance": {
+                    "type": "number",
+                    "exclusiveMinimum": 0,
+                    "maximum": 4
+                  }
+                },
+                "required": [
+                  "target",
+                  "tolerance"
+                ],
+                "additionalProperties": false
+              },
+              "suddenChangeRisk": {
+                "type": "object",
+                "properties": {
+                  "target": {
+                    "type": "number",
+                    "minimum": 1,
+                    "maximum": 5
+                  },
+                  "tolerance": {
+                    "type": "number",
+                    "exclusiveMinimum": 0,
+                    "maximum": 4
+                  }
+                },
+                "required": [
+                  "target",
+                  "tolerance"
+                ],
+                "additionalProperties": false
+              },
+              "textureDensity": {
+                "type": "object",
+                "properties": {
+                  "target": {
+                    "type": "number",
+                    "minimum": 1,
+                    "maximum": 5
+                  },
+                  "tolerance": {
+                    "type": "number",
+                    "exclusiveMinimum": 0,
+                    "maximum": 4
+                  }
+                },
+                "required": [
+                  "target",
+                  "tolerance"
+                ],
+                "additionalProperties": false
+              },
+              "brightness": {
+                "type": "object",
+                "properties": {
+                  "target": {
+                    "type": "number",
+                    "minimum": 1,
+                    "maximum": 5
+                  },
+                  "tolerance": {
+                    "type": "number",
+                    "exclusiveMinimum": 0,
+                    "maximum": 4
+                  }
+                },
+                "required": [
+                  "target",
+                  "tolerance"
+                ],
+                "additionalProperties": false
+              },
+              "warmth": {
+                "type": "object",
+                "properties": {
+                  "target": {
+                    "type": "number",
+                    "minimum": 1,
+                    "maximum": 5
+                  },
+                  "tolerance": {
+                    "type": "number",
+                    "exclusiveMinimum": 0,
+                    "maximum": 4
+                  }
+                },
+                "required": [
+                  "target",
+                  "tolerance"
+                ],
+                "additionalProperties": false
+              },
+              "spaciousness": {
+                "type": "object",
+                "properties": {
+                  "target": {
+                    "type": "number",
+                    "minimum": 1,
+                    "maximum": 5
+                  },
+                  "tolerance": {
+                    "type": "number",
+                    "exclusiveMinimum": 0,
+                    "maximum": 4
+                  }
+                },
+                "required": [
+                  "target",
+                  "tolerance"
+                ],
+                "additionalProperties": false
+              }
+            },
+            "additionalProperties": false
+          },
+          "language": {
+            "type": "string",
+            "enum": [
+              "zh",
+              "en"
+            ]
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    {
+      "type": "function",
+      "name": "library_profile_search",
+      "description": "Donor Music Profile structured search across the supplied valid catalog.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "nameQuery": {
+            "type": "string"
+          },
+          "tagPreferences": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "tagId": {
+                  "type": "string"
+                },
+                "importance": {
+                  "type": "number",
+                  "minimum": 0,
+                  "maximum": 1
+                }
+              },
+              "required": [
+                "tagId",
+                "importance"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "axisTargets": {
+            "type": "object",
+            "properties": {
+              "arousal": {
+                "type": "object",
+                "properties": {
+                  "target": {
+                    "type": "number",
+                    "minimum": 1,
+                    "maximum": 5
+                  },
+                  "tolerance": {
+                    "type": "number",
+                    "exclusiveMinimum": 0,
+                    "maximum": 4
+                  }
+                },
+                "required": [
+                  "target",
+                  "tolerance"
+                ],
+                "additionalProperties": false
+              },
+              "rhythmicDrive": {
+                "type": "object",
+                "properties": {
+                  "target": {
+                    "type": "number",
+                    "minimum": 1,
+                    "maximum": 5
+                  },
+                  "tolerance": {
+                    "type": "number",
+                    "exclusiveMinimum": 0,
+                    "maximum": 4
+                  }
+                },
+                "required": [
+                  "target",
+                  "tolerance"
+                ],
+                "additionalProperties": false
+              },
+              "attentionCapture": {
+                "type": "object",
+                "properties": {
+                  "target": {
+                    "type": "number",
+                    "minimum": 1,
+                    "maximum": 5
+                  },
+                  "tolerance": {
+                    "type": "number",
+                    "exclusiveMinimum": 0,
+                    "maximum": 4
+                  }
+                },
+                "required": [
+                  "target",
+                  "tolerance"
+                ],
+                "additionalProperties": false
+              },
+              "globalStability": {
+                "type": "object",
+                "properties": {
+                  "target": {
+                    "type": "number",
+                    "minimum": 1,
+                    "maximum": 5
+                  },
+                  "tolerance": {
+                    "type": "number",
+                    "exclusiveMinimum": 0,
+                    "maximum": 4
+                  }
+                },
+                "required": [
+                  "target",
+                  "tolerance"
+                ],
+                "additionalProperties": false
+              },
+              "suddenChangeRisk": {
+                "type": "object",
+                "properties": {
+                  "target": {
+                    "type": "number",
+                    "minimum": 1,
+                    "maximum": 5
+                  },
+                  "tolerance": {
+                    "type": "number",
+                    "exclusiveMinimum": 0,
+                    "maximum": 4
+                  }
+                },
+                "required": [
+                  "target",
+                  "tolerance"
+                ],
+                "additionalProperties": false
+              },
+              "textureDensity": {
+                "type": "object",
+                "properties": {
+                  "target": {
+                    "type": "number",
+                    "minimum": 1,
+                    "maximum": 5
+                  },
+                  "tolerance": {
+                    "type": "number",
+                    "exclusiveMinimum": 0,
+                    "maximum": 4
+                  }
+                },
+                "required": [
+                  "target",
+                  "tolerance"
+                ],
+                "additionalProperties": false
+              },
+              "brightness": {
+                "type": "object",
+                "properties": {
+                  "target": {
+                    "type": "number",
+                    "minimum": 1,
+                    "maximum": 5
+                  },
+                  "tolerance": {
+                    "type": "number",
+                    "exclusiveMinimum": 0,
+                    "maximum": 4
+                  }
+                },
+                "required": [
+                  "target",
+                  "tolerance"
+                ],
+                "additionalProperties": false
+              },
+              "warmth": {
+                "type": "object",
+                "properties": {
+                  "target": {
+                    "type": "number",
+                    "minimum": 1,
+                    "maximum": 5
+                  },
+                  "tolerance": {
+                    "type": "number",
+                    "exclusiveMinimum": 0,
+                    "maximum": 4
+                  }
+                },
+                "required": [
+                  "target",
+                  "tolerance"
+                ],
+                "additionalProperties": false
+              },
+              "spaciousness": {
+                "type": "object",
+                "properties": {
+                  "target": {
+                    "type": "number",
+                    "minimum": 1,
+                    "maximum": 5
+                  },
+                  "tolerance": {
+                    "type": "number",
+                    "exclusiveMinimum": 0,
+                    "maximum": 4
+                  }
+                },
+                "required": [
+                  "target",
+                  "tolerance"
+                ],
+                "additionalProperties": false
+              }
+            },
+            "additionalProperties": false
+          },
+          "candidateKinds": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "song",
+                "touchpad_track"
+              ]
+            },
+            "uniqueItems": true
+          },
+          "excludePlaybackUnitIds": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "topK": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 5
+          },
+          "language": {
+            "type": "string",
+            "enum": [
+              "zh",
+              "en"
+            ]
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    {
+      "type": "function",
+      "name": "music_description_recall",
+      "description": "Exact donor CLAP description recall. Requires model-authored English queryText; no server rewrite or translation.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "queryText": {
+            "type": "string"
+          },
+          "textLanguage": {
+            "type": "string",
+            "enum": [
+              "en"
+            ]
+          },
+          "candidateKinds": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "song",
+                "touchpad_track"
+              ]
+            },
+            "uniqueItems": true
+          },
+          "excludePlaybackUnitIds": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "topK": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 5
+          }
+        },
+        "required": [
+          "queryText",
+          "textLanguage"
+        ],
+        "additionalProperties": false
+      }
+    }
+  ],
+  "withoutTouchpad": [
+    {
+      "type": "function",
+      "name": "library_profile_search",
+      "description": "Donor Music Profile structured search across the supplied valid catalog.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "nameQuery": {
+            "type": "string"
+          },
+          "tagPreferences": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "tagId": {
+                  "type": "string"
+                },
+                "importance": {
+                  "type": "number",
+                  "minimum": 0,
+                  "maximum": 1
+                }
+              },
+              "required": [
+                "tagId",
+                "importance"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "axisTargets": {
+            "type": "object",
+            "properties": {
+              "arousal": {
+                "type": "object",
+                "properties": {
+                  "target": {
+                    "type": "number",
+                    "minimum": 1,
+                    "maximum": 5
+                  },
+                  "tolerance": {
+                    "type": "number",
+                    "exclusiveMinimum": 0,
+                    "maximum": 4
+                  }
+                },
+                "required": [
+                  "target",
+                  "tolerance"
+                ],
+                "additionalProperties": false
+              },
+              "rhythmicDrive": {
+                "type": "object",
+                "properties": {
+                  "target": {
+                    "type": "number",
+                    "minimum": 1,
+                    "maximum": 5
+                  },
+                  "tolerance": {
+                    "type": "number",
+                    "exclusiveMinimum": 0,
+                    "maximum": 4
+                  }
+                },
+                "required": [
+                  "target",
+                  "tolerance"
+                ],
+                "additionalProperties": false
+              },
+              "attentionCapture": {
+                "type": "object",
+                "properties": {
+                  "target": {
+                    "type": "number",
+                    "minimum": 1,
+                    "maximum": 5
+                  },
+                  "tolerance": {
+                    "type": "number",
+                    "exclusiveMinimum": 0,
+                    "maximum": 4
+                  }
+                },
+                "required": [
+                  "target",
+                  "tolerance"
+                ],
+                "additionalProperties": false
+              },
+              "globalStability": {
+                "type": "object",
+                "properties": {
+                  "target": {
+                    "type": "number",
+                    "minimum": 1,
+                    "maximum": 5
+                  },
+                  "tolerance": {
+                    "type": "number",
+                    "exclusiveMinimum": 0,
+                    "maximum": 4
+                  }
+                },
+                "required": [
+                  "target",
+                  "tolerance"
+                ],
+                "additionalProperties": false
+              },
+              "suddenChangeRisk": {
+                "type": "object",
+                "properties": {
+                  "target": {
+                    "type": "number",
+                    "minimum": 1,
+                    "maximum": 5
+                  },
+                  "tolerance": {
+                    "type": "number",
+                    "exclusiveMinimum": 0,
+                    "maximum": 4
+                  }
+                },
+                "required": [
+                  "target",
+                  "tolerance"
+                ],
+                "additionalProperties": false
+              },
+              "textureDensity": {
+                "type": "object",
+                "properties": {
+                  "target": {
+                    "type": "number",
+                    "minimum": 1,
+                    "maximum": 5
+                  },
+                  "tolerance": {
+                    "type": "number",
+                    "exclusiveMinimum": 0,
+                    "maximum": 4
+                  }
+                },
+                "required": [
+                  "target",
+                  "tolerance"
+                ],
+                "additionalProperties": false
+              },
+              "brightness": {
+                "type": "object",
+                "properties": {
+                  "target": {
+                    "type": "number",
+                    "minimum": 1,
+                    "maximum": 5
+                  },
+                  "tolerance": {
+                    "type": "number",
+                    "exclusiveMinimum": 0,
+                    "maximum": 4
+                  }
+                },
+                "required": [
+                  "target",
+                  "tolerance"
+                ],
+                "additionalProperties": false
+              },
+              "warmth": {
+                "type": "object",
+                "properties": {
+                  "target": {
+                    "type": "number",
+                    "minimum": 1,
+                    "maximum": 5
+                  },
+                  "tolerance": {
+                    "type": "number",
+                    "exclusiveMinimum": 0,
+                    "maximum": 4
+                  }
+                },
+                "required": [
+                  "target",
+                  "tolerance"
+                ],
+                "additionalProperties": false
+              },
+              "spaciousness": {
+                "type": "object",
+                "properties": {
+                  "target": {
+                    "type": "number",
+                    "minimum": 1,
+                    "maximum": 5
+                  },
+                  "tolerance": {
+                    "type": "number",
+                    "exclusiveMinimum": 0,
+                    "maximum": 4
+                  }
+                },
+                "required": [
+                  "target",
+                  "tolerance"
+                ],
+                "additionalProperties": false
+              }
+            },
+            "additionalProperties": false
+          },
+          "candidateKinds": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "song",
+                "touchpad_track"
+              ]
+            },
+            "uniqueItems": true
+          },
+          "excludePlaybackUnitIds": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "topK": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 5
+          },
+          "language": {
+            "type": "string",
+            "enum": [
+              "zh",
+              "en"
+            ]
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    {
+      "type": "function",
+      "name": "music_description_recall",
+      "description": "Exact donor CLAP description recall. Requires model-authored English queryText; no server rewrite or translation.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "queryText": {
+            "type": "string"
+          },
+          "textLanguage": {
+            "type": "string",
+            "enum": [
+              "en"
+            ]
+          },
+          "candidateKinds": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "song",
+                "touchpad_track"
+              ]
+            },
+            "uniqueItems": true
+          },
+          "excludePlaybackUnitIds": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "topK": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 5
+          }
+        },
+        "required": [
+          "queryText",
+          "textLanguage"
+        ],
+        "additionalProperties": false
+      }
+    }
+  ],
+  "submitSelectionExample": {
+    "type": "function",
+    "name": "submit_selection",
+    "description": "Submit ordered playbackUnitId choices selected only from retrieval results.",
+    "parameters": {
+      "type": "object",
+      "properties": {
+        "playbackUnitIds": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": [
+              "pu:demo-touchpad:o00",
+              "pu:demo-touchpad:o01",
+              "pu:demo-touchpad:o02",
+              "pu:demo-touchpad:o03",
+              "pu:demo-touchpad:o04",
+              "pu:demo-touchpad:o05",
+              "pu:demo-touchpad:o06",
+              "pu:demo-touchpad:o07",
+              "pu:demo-touchpad:o08",
+              "pu:demo-other:o00"
+            ]
+          },
+          "minItems": 1,
+          "maxItems": 5
+        },
+        "reason": {
+          "type": "string",
+          "description": "One short user-facing rationale for the FIRST submitted playbackUnitId, comparing it to current/internal options. No private reasoning.",
+          "maxLength": 240
+        }
+      },
+      "required": [
+        "playbackUnitIds",
+        "reason"
+      ],
+      "additionalProperties": false
+    }
+  }
+}

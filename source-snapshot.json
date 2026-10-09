@@ -1,0 +1,100 @@
+{
+  "referenceDate": "2026-10-09",
+  "purpose": "Auto PoC prompt, retrieval tool and staged execution implementation reference",
+  "iosBaselineCommit": "280adf7b2c6861a54d755c5c1b512951af67dd82",
+  "runtimeAssets": "Supplied privately using environment paths or a local assets mount; no real catalogs or embeddings included.",
+  "files": [
+    {
+      "path": "app/__init__.py",
+      "sourceSha256": "79fa64c04814d5d2f94dfb2475890fb5fc5f3dba1d83a2ea527150cf1bc2abe7",
+      "publishedSha256": "79fa64c04814d5d2f94dfb2475890fb5fc5f3dba1d83a2ea527150cf1bc2abe7",
+      "publicationChanges": []
+    },
+    {
+      "path": "app/agent.py",
+      "sourceSha256": "dd19740901511f7b9929cb31927fee283d3f6f443bf51badefc807e05f682c13",
+      "publishedSha256": "dd19740901511f7b9929cb31927fee283d3f6f443bf51badefc807e05f682c13",
+      "publicationChanges": []
+    },
+    {
+      "path": "app/amap_poi.py",
+      "sourceSha256": "cf903bd1fbbe29f355fd35e9a6f39475e9909ac31ff1077ed7fabdfcb3b465ac",
+      "publishedSha256": "cf903bd1fbbe29f355fd35e9a6f39475e9909ac31ff1077ed7fabdfcb3b465ac",
+      "publicationChanges": []
+    },
+    {
+      "path": "app/catalog.py",
+      "sourceSha256": "6ea91c368f98e7a82b4ec6c6ba12203871bfa53267d20f9ee7c0cd88985b7285",
+      "publishedSha256": "6ea91c368f98e7a82b4ec6c6ba12203871bfa53267d20f9ee7c0cd88985b7285",
+      "publicationChanges": []
+    },
+    {
+      "path": "app/config.py",
+      "sourceSha256": "3f0c4863e69d11de1cf7efd0a09c267673a86f3bdd790eb1ca55e1c8762f847d",
+      "publishedSha256": "3f0c4863e69d11de1cf7efd0a09c267673a86f3bdd790eb1ca55e1c8762f847d",
+      "publicationChanges": []
+    },
+    {
+      "path": "app/environment.py",
+      "sourceSha256": "da36c002ad3dc68eb1f34b8b5771a7a616a6d2881161f2da0ed645761dc99251",
+      "publishedSha256": "da36c002ad3dc68eb1f34b8b5771a7a616a6d2881161f2da0ed645761dc99251",
+      "publicationChanges": []
+    },
+    {
+      "path": "app/fast_selection.py",
+      "sourceSha256": "6c8a74e99c82fe8fad831d920932ce0e1d4bbee17c0a08aea50100cf568ee2f5",
+      "publishedSha256": "6c8a74e99c82fe8fad831d920932ce0e1d4bbee17c0a08aea50100cf568ee2f5",
+      "publicationChanges": []
+    },
+    {
+      "path": "app/main.py",
+      "sourceSha256": "1c2dd2392e5fe247cf2d69989b45f50b1f81bdeb46e84ffa9fbf85f9a21ed52b",
+      "publishedSha256": "1c2dd2392e5fe247cf2d69989b45f50b1f81bdeb46e84ffa9fbf85f9a21ed52b",
+      "publicationChanges": []
+    },
+    {
+      "path": "app/music_profile_v2_2.py",
+      "sourceSha256": "2ff45a4445230c07b24e683384ef89640cd48f96bb7f06eb01cdabef1a218d45",
+      "publishedSha256": "2ff45a4445230c07b24e683384ef89640cd48f96bb7f06eb01cdabef1a218d45",
+      "publicationChanges": []
+    },
+    {
+      "path": "app/music_recall_v2_2.py",
+      "sourceSha256": "99a074c38d9c20d7d8760c2089160dafa173af39825a022e4a1984ccaa6dbc0d",
+      "publishedSha256": "99a074c38d9c20d7d8760c2089160dafa173af39825a022e4a1984ccaa6dbc0d",
+      "publicationChanges": []
+    },
+    {
+      "path": "app/provider/volcengine_v3.py",
+      "sourceSha256": "f347fe766c356fa6d4b5441d1f928bd5cc7ac47538e23eb988381e41f949ac1a",
+      "publishedSha256": "f347fe766c356fa6d4b5441d1f928bd5cc7ac47538e23eb988381e41f949ac1a",
+      "publicationChanges": []
+    },
+    {
+      "path": "app/resource_validation.py",
+      "sourceSha256": "f8b4df1765453cff8da998e42520becd8705eb7c1a38989d107af7fa156f0813",
+      "publishedSha256": "f8b4df1765453cff8da998e42520becd8705eb7c1a38989d107af7fa156f0813",
+      "publicationChanges": []
+    },
+    {
+      "path": "app/schemas.py",
+      "sourceSha256": "462063ab41d7c9769f8815115b44cd0a12f40ca4815b435d418b0c7f3971fd4b",
+      "publishedSha256": "462063ab41d7c9769f8815115b44cd0a12f40ca4815b435d418b0c7f3971fd4b",
+      "publicationChanges": []
+    },
+    {
+      "path": "app/store.py",
+      "sourceSha256": "7152c5db1f68ae2a7dd7331436350ad4c8ef54b59474ae40cfae90fc5ef2b6e4",
+      "publishedSha256": "7152c5db1f68ae2a7dd7331436350ad4c8ef54b59474ae40cfae90fc5ef2b6e4",
+      "publicationChanges": []
+    },
+    {
+      "path": "app/tts.py",
+      "sourceSha256": "97dcc9e5cdc5e41f7f16081bbbfd98750c1b2a598f4d7b914b0f262e6123395d",
+      "publishedSha256": "1875a1368409e22da3b303baad9eb57346bdcc8e96227e5d53e1dd0c153f80a6",
+      "publicationChanges": [
+        "Removed deployment-owned English speaker default; set VOLCENGINE_TTS_VOICE_ID_EN."
+      ]
+    }
+  ]
+}

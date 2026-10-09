@@ -1,0 +1,6 @@
+fastapi
+uvicorn[standard]
+openai==2.44.0
+websockets>=15,<17
+pytest
+httpx
