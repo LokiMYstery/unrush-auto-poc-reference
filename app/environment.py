@@ -11,7 +11,7 @@ from app.amap_poi import enrich_poi
 
 
 async def enrich_context(context: dict[str, Any]) -> dict[str, Any]:
-    enriched = dict(context)
+    enriched = normalize_scene_context(context)
     enriched["serverReceivedAt"] = datetime.now(UTC).isoformat()
     enriched["environmentFreshness"] = {
         "time": "server_current",
@@ -43,6 +43,71 @@ def context_snapshot(context: dict[str, Any]) -> dict[str, Any]:
     }
 
 
+def normalize_scene_context(context: dict[str, Any]) -> dict[str, Any]:
+    """Separate weak recommendations from explicit user scene intent before prompting."""
+    result = dict(context)
+    legacy_recommendation = result.pop("recommendedScene", None)
+    mode = _interaction_mode(result)
+    if mode is None:
+        result.pop("interactionMode", None)
+    else:
+        result["interactionMode"] = mode
+
+    if not isinstance(result.get("systemRecommendation"), dict) and isinstance(legacy_recommendation, dict):
+        result["systemRecommendation"] = _scene_summary(legacy_recommendation, source="legacy_recommended_scene")
+    elif isinstance(result.get("systemRecommendation"), dict):
+        result["systemRecommendation"] = _scene_summary(result["systemRecommendation"], source="system_recommendation")
+
+    current_scene = result.get("currentScene")
+    if mode == "scene" and isinstance(current_scene, dict) and str(current_scene.get("source") or "").lower() == "user_selected":
+        result["currentScene"] = _scene_summary(current_scene, source="user_selected")
+    else:
+        result.pop("currentScene", None)
+
+    potential_intent = result.get("potentialIntent")
+    if mode == "auto" and isinstance(potential_intent, dict) and str(potential_intent.get("source") or "").lower() == "notification":
+        result["potentialIntent"] = _intent_summary(potential_intent)
+    elif mode == "auto":
+        result["potentialIntent"] = None
+    else:
+        result.pop("potentialIntent", None)
+
+    result["sceneSemantics"] = {
+        "currentScene": "explicit_user_selected" if isinstance(result.get("currentScene"), dict) else "not_provided",
+        "systemRecommendation": "weak_suggestion" if isinstance(result.get("systemRecommendation"), dict) else "not_provided",
+        "potentialIntent": "notification_hint" if isinstance(result.get("potentialIntent"), dict) else "not_provided",
+    }
+    return result
+
+
+def _interaction_mode(context: dict[str, Any]) -> str | None:
+    raw = context.get("interactionMode")
+    if isinstance(raw, str) and raw.lower() in {"auto", "scene", "goal"}:
+        return raw.lower()
+    if context.get("goalMode") is True:
+        return "goal"
+    return None
+
+
+def _scene_summary(value: dict[str, Any], *, source: str) -> dict[str, Any]:
+    summary = {
+        key: value.get(key)
+        for key in ("sceneId", "sceneCode", "sceneName", "title", "reason", "confidence")
+        if value.get(key) is not None
+    }
+    existing_source = str(value.get("source") or "").lower()
+    summary["source"] = "legacy_recommended_scene" if existing_source == "legacy_recommended_scene" else source
+    return summary
+
+
+def _intent_summary(value: dict[str, Any]) -> dict[str, Any]:
+    return {
+        key: value.get(key)
+        for key in ("source", "summary", "title", "reason", "notificationId", "confidence")
+        if value.get(key) is not None
+    } | {"source": "notification"}
+
+
 def narration_signature(context: dict[str, Any]) -> dict[str, Any]:
     snapshot = context_snapshot(context)
     weather, pressure = snapshot["weather"], snapshot["pressure"]
@@ -65,7 +130,7 @@ def pressure_level(pressure: dict[str, Any]) -> str | None:
 
 def spoken_context(context: dict[str, Any], language: str) -> dict[str, Any]:
     """Retain provenance but expose StressLab's qualitative labels to narration."""
-    result = dict(context)
+    result = normalize_scene_context(context)
     health = dict(context.get("health") or {})
     pressure = dict(health.get("pressure") or {})
     level = pressure_level(pressure) if pressure.get("baselineReady") is not False else None
@@ -133,7 +198,7 @@ def environment_lead(context: dict[str, Any], language: str) -> str:
 def narration_context(context: dict[str, Any], memories: list[dict[str, Any]]) -> dict[str, Any]:
     signature = narration_signature(context)
     previous = next((item.get("environmentNarrationSignature") for item in reversed(memories)
-                     if item.get("spokenAssessment") and item.get("environmentNarrationSignature")), None)
+                     if item.get("spokenAssessment") and isinstance(item.get("environmentNarrationSignature"), dict)), None)
     changed = list(signature) if previous is None else [key for key in signature if signature[key] != previous.get(key)]
     return {"mode": "initial" if previous is None else "changed" if changed else "music_only",
             "changedFields": changed, "signature": signature}

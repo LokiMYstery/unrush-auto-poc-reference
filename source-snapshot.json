@@ -1,5 +1,5 @@
 {
-  "referenceDate": "2026-10-09",
+  "referenceDate": "2026-10-14",
   "purpose": "Auto PoC prompt, retrieval tool and staged execution implementation reference",
   "iosBaselineCommit": "280adf7b2c6861a54d755c5c1b512951af67dd82",
   "runtimeAssets": "Supplied privately using environment paths or a local assets mount; no real catalogs or embeddings included.",
@@ -12,8 +12,8 @@
     },
     {
       "path": "app/agent.py",
-      "sourceSha256": "dd19740901511f7b9929cb31927fee283d3f6f443bf51badefc807e05f682c13",
-      "publishedSha256": "dd19740901511f7b9929cb31927fee283d3f6f443bf51badefc807e05f682c13",
+      "sourceSha256": "b64409f5daf0bb3c6a92059a2caadc78d14ac98612bcad2e6fafd6955bab589f",
+      "publishedSha256": "b64409f5daf0bb3c6a92059a2caadc78d14ac98612bcad2e6fafd6955bab589f",
       "publicationChanges": []
     },
     {
@@ -36,8 +36,8 @@
     },
     {
       "path": "app/environment.py",
-      "sourceSha256": "da36c002ad3dc68eb1f34b8b5771a7a616a6d2881161f2da0ed645761dc99251",
-      "publishedSha256": "da36c002ad3dc68eb1f34b8b5771a7a616a6d2881161f2da0ed645761dc99251",
+      "sourceSha256": "67669cd18f870ce61f256d7db1903dda4214f86eef758976af1508ff66c3e943",
+      "publishedSha256": "67669cd18f870ce61f256d7db1903dda4214f86eef758976af1508ff66c3e943",
       "publicationChanges": []
     },
     {
@@ -47,9 +47,15 @@
       "publicationChanges": []
     },
     {
+      "path": "app/goals.py",
+      "sourceSha256": "4988213ac2957f7a919de68e785241f6b0ae6e55882225a9d0bc399b9b106cd4",
+      "publishedSha256": "4988213ac2957f7a919de68e785241f6b0ae6e55882225a9d0bc399b9b106cd4",
+      "publicationChanges": []
+    },
+    {
       "path": "app/main.py",
-      "sourceSha256": "1c2dd2392e5fe247cf2d69989b45f50b1f81bdeb46e84ffa9fbf85f9a21ed52b",
-      "publishedSha256": "1c2dd2392e5fe247cf2d69989b45f50b1f81bdeb46e84ffa9fbf85f9a21ed52b",
+      "sourceSha256": "0d490a7f62da58ba1e07294c27ea9b12e2cf0af726fca028492f91ae0f6f2594",
+      "publishedSha256": "0d490a7f62da58ba1e07294c27ea9b12e2cf0af726fca028492f91ae0f6f2594",
       "publicationChanges": []
     },
     {
@@ -71,29 +77,35 @@
       "publicationChanges": []
     },
     {
+      "path": "app/resource_auth.py",
+      "sourceSha256": "54951c539112ee133a73e95cdd1a942b193872a689a220b4ac46fc178a94a107",
+      "publishedSha256": "54951c539112ee133a73e95cdd1a942b193872a689a220b4ac46fc178a94a107",
+      "publicationChanges": []
+    },
+    {
       "path": "app/resource_validation.py",
-      "sourceSha256": "f8b4df1765453cff8da998e42520becd8705eb7c1a38989d107af7fa156f0813",
-      "publishedSha256": "f8b4df1765453cff8da998e42520becd8705eb7c1a38989d107af7fa156f0813",
+      "sourceSha256": "ebd6d9f71ecd08d8df490074fd2471917f592b01932371320a901703e2297094",
+      "publishedSha256": "ebd6d9f71ecd08d8df490074fd2471917f592b01932371320a901703e2297094",
       "publicationChanges": []
     },
     {
       "path": "app/schemas.py",
-      "sourceSha256": "462063ab41d7c9769f8815115b44cd0a12f40ca4815b435d418b0c7f3971fd4b",
-      "publishedSha256": "462063ab41d7c9769f8815115b44cd0a12f40ca4815b435d418b0c7f3971fd4b",
+      "sourceSha256": "9b977544f07f421a32cf5a3ed7986a972016b4c29d75cd5662cda15699b6f449",
+      "publishedSha256": "9b977544f07f421a32cf5a3ed7986a972016b4c29d75cd5662cda15699b6f449",
       "publicationChanges": []
     },
     {
       "path": "app/store.py",
-      "sourceSha256": "7152c5db1f68ae2a7dd7331436350ad4c8ef54b59474ae40cfae90fc5ef2b6e4",
-      "publishedSha256": "7152c5db1f68ae2a7dd7331436350ad4c8ef54b59474ae40cfae90fc5ef2b6e4",
+      "sourceSha256": "807fa985f275b9a078a84c4e5cf641cd403fdda22c7ce9e0b03b8bec9a5d9537",
+      "publishedSha256": "807fa985f275b9a078a84c4e5cf641cd403fdda22c7ce9e0b03b8bec9a5d9537",
       "publicationChanges": []
     },
     {
       "path": "app/tts.py",
       "sourceSha256": "97dcc9e5cdc5e41f7f16081bbbfd98750c1b2a598f4d7b914b0f262e6123395d",
-      "publishedSha256": "1875a1368409e22da3b303baad9eb57346bdcc8e96227e5d53e1dd0c153f80a6",
+      "publishedSha256": "aa1bcbea45c859e421530ff5a6d10712e84613347a47966ecd99d1adc39eb347",
       "publicationChanges": [
-        "Removed deployment-owned English speaker default; set VOLCENGINE_TTS_VOICE_ID_EN."
+        "Public voice/resource defaults retained; runtime credentials excluded."
       ]
     }
   ]

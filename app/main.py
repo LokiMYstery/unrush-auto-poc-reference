@@ -24,7 +24,23 @@ from app.config import (
 from app.environment import enrich_context, context_snapshot, narration_context
 from app.fast_selection import fast_choices, tier_config
 from app.resource_validation import validate_playback_unit
-from app.schemas import CancelRequest, FastRequest, FastResponse, InitialRun, PlaybackReceipt, PollResponse, TaskRequest, Welcome
+from app import goals
+from app.schemas import (
+    ENERGY_GOALS,
+    CancelRequest,
+    FastRequest,
+    FastResponse,
+    GoalControlRequest,
+    GoalCreateRequest,
+    GoalPlaybackReceipt,
+    GoalProgressRequest,
+    GoalResponse,
+    InitialRun,
+    PlaybackReceipt,
+    PollResponse,
+    TaskRequest,
+    Welcome,
+)
 from app.tts import WELCOME_TEXT, prebuild_welcome_voices, synthesis_count, welcome_voice_id
 
 
@@ -37,14 +53,23 @@ async def lifespan(_app: FastAPI) -> AsyncIterator[None]:
     tier_config()
     await prebuild_welcome_voices()
     await recover_incomplete_runs()
+    await goals.recover_goals()
     yield
 
 
 async def recover_incomplete_runs() -> None:
     for run in store.list_runs_for_recovery():
+        if str(run.get("client_session_id") or "").startswith("goal-internal:"):
+            continue
         if not store.run_is_session_head(run):
             continue
         run_id = str(run["run_id"])
+        context = store.loads(run.get("context_json"), {})
+        if context.get("energyGoal") == "maintain":
+            # Do not resume an old third-direction choice or replay its speech.
+            # Keep historical rows; a fresh task must choose up/down explicitly.
+            store.update_run(run_id, status=RUN_STATUS_CANCELLED)
+            continue
         status = str(run["status"])
         receipt = store.loads(run.get("receipt_json"), {})
         if receipt:
@@ -63,7 +88,7 @@ async def recover_incomplete_runs() -> None:
                 goal = context.get("energyGoal")
                 store.add_delivery_once_phase(run_id=run_id, phase=PHASE_SELECTION,
                                               playback_unit_id=selected_id, status=context.get("selectionStatus") or "model_selection_invalid_keep",
-                                              energy_goal=goal if goal in {"boost", "maintain", "lower"} else None)
+                                              energy_goal=goal if goal in ENERGY_GOALS else None)
             else:
                 store.add_delivery(run_id=run_id, phase=PHASE_ERROR,
                                    text="这次音乐选择未能恢复，请重新调整。", status="recovery_selection_missing")
@@ -117,7 +142,7 @@ async def auto_fast(request: FastRequest) -> FastResponse:
             if remaining <= 0:
                 raise HTTPException(status_code=503, detail="fast_resource_validation_timeout")
             try:
-                validation = await asyncio.wait_for(validate_playback_unit(candidate), timeout=remaining)
+                validation = await asyncio.wait_for(validate_playback_unit(candidate, origin_scene_id=choice.get("sceneId")), timeout=remaining)
             except TimeoutError:
                 raise HTTPException(status_code=503, detail="fast_resource_validation_timeout")
             if validation.ok:
@@ -235,6 +260,10 @@ async def poll_deliveries(run_id: str, after: int = 0, waitSeconds: int = 20) ->
         run = store.get_run(run_id)
         if run is None:
             raise HTTPException(status_code=404, detail="run_not_found")
+        if run["status"] == RUN_STATUS_CANCELLED:
+            # Historical deliveries stay in storage, but cancelled work must not
+            # replay old speech or selections on a connected client's next poll.
+            return PollResponse(runId=run_id, status=RUN_STATUS_CANCELLED, deliveries=[])
         deliveries = store.deliveries_after(run_id, after)
         if deliveries or run["status"] not in {"running", "waiting_playback"} or asyncio.get_running_loop().time() >= deadline:
             return PollResponse(runId=run_id, status=run["status"], deliveries=deliveries)
@@ -330,6 +359,53 @@ async def cancel_run(run_id: str, request: CancelRequest) -> InitialRun:
     if not changed and latest["status"] != RUN_STATUS_CANCELLED:
         return InitialRun(runId=run_id, status=latest["status"])
     return InitialRun(runId=run_id, status=RUN_STATUS_CANCELLED)
+
+
+@app.post(f"{API_PREFIX}/goals", dependencies=[Depends(auth)], response_model=GoalResponse)
+async def create_goal(request: GoalCreateRequest, background_tasks: BackgroundTasks) -> GoalResponse:
+    return await goals.create_goal(request, background_tasks)
+
+
+@app.get(f"{API_PREFIX}/goals/{{goal_id}}", dependencies=[Depends(auth)], response_model=GoalResponse)
+async def poll_goal(goal_id: str, after: int = 0, waitSeconds: int = 20) -> GoalResponse:
+    wait_seconds = max(0, min(waitSeconds, 20))
+    deadline = asyncio.get_running_loop().time() + wait_seconds
+    phase_fingerprint = None
+    while True:
+        response = goals.response_for_goal(goal_id, after=after)
+        current_fingerprint = tuple((phase.phaseId, phase.status, phase.preparedPlaybackUnitId,
+                                     phase.preparedOpeningVoiceId, phase.runId) for phase in response.phases)
+        if response.deliveries or response.status not in {"planning", "active"} or asyncio.get_running_loop().time() >= deadline:
+            return response
+        if phase_fingerprint is not None and current_fingerprint != phase_fingerprint:
+            return response
+        phase_fingerprint = current_fingerprint
+        await asyncio.sleep(0.25)
+
+
+@app.post(f"{API_PREFIX}/goals/{{goal_id}}/advance", dependencies=[Depends(auth)], response_model=GoalResponse)
+async def advance_goal(goal_id: str, request: GoalControlRequest, background_tasks: BackgroundTasks) -> GoalResponse:
+    return await goals.advance_goal(goal_id, request, background_tasks)
+
+
+@app.post(f"{API_PREFIX}/goals/{{goal_id}}/retry", dependencies=[Depends(auth)], response_model=GoalResponse)
+async def retry_goal(goal_id: str, request: GoalControlRequest, background_tasks: BackgroundTasks) -> GoalResponse:
+    return await goals.retry_goal_phase(goal_id, request, background_tasks)
+
+
+@app.post(f"{API_PREFIX}/goals/{{goal_id}}/playback-receipt", dependencies=[Depends(auth)], response_model=GoalResponse)
+async def goal_playback_receipt(goal_id: str, receipt: GoalPlaybackReceipt, background_tasks: BackgroundTasks) -> GoalResponse:
+    return await goals.goal_playback_receipt(goal_id, receipt, background_tasks)
+
+
+@app.post(f"{API_PREFIX}/goals/{{goal_id}}/progress", dependencies=[Depends(auth)], response_model=GoalResponse)
+async def goal_progress(goal_id: str, request: GoalProgressRequest) -> GoalResponse:
+    return goals.progress_goal(goal_id, request)
+
+
+@app.post(f"{API_PREFIX}/goals/{{goal_id}}/cancel", dependencies=[Depends(auth)], response_model=GoalResponse)
+async def cancel_goal(goal_id: str, request: GoalControlRequest) -> GoalResponse:
+    return goals.cancel_goal(goal_id, request)
 
 
 @app.get(f"{API_PREFIX}/voice/{{voice_id}}", dependencies=[Depends(auth)])

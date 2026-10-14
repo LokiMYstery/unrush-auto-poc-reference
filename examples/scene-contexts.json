@@ -1,0 +1,29 @@
+{
+  "auto": {
+    "interactionMode": "auto",
+    "systemRecommendation": {
+      "sceneName": "午休"
+    },
+    "potentialIntent": null
+  },
+  "userSelectedScene": {
+    "interactionMode": "scene",
+    "currentScene": {
+      "source": "user_selected",
+      "sceneName": "午休"
+    },
+    "systemRecommendation": {
+      "sceneName": "睡眠"
+    }
+  },
+  "goal": {
+    "interactionMode": "goal",
+    "goalMode": true,
+    "goal": {
+      "title": "整理报告"
+    },
+    "systemRecommendation": {
+      "sceneName": "专注"
+    }
+  }
+}

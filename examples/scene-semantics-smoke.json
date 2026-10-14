@@ -1,0 +1,169 @@
+{
+  "model": "gpt-6-luna",
+  "results": [
+    {
+      "case": "legacy_recommendation_sleep_at_noon",
+      "energyGoal": "lower",
+      "rawAssessment": "把音乐能量轻轻放低：选择温暖、节奏平稳而不沉闷的编排，让听感更舒缓。",
+      "finalText": "把音乐能量轻轻放低：选择温暖、节奏平稳而不沉闷的编排，让听感更舒缓。",
+      "assessmentPromptContext": {
+        "localTime": "2026-10-14T12:30:00+08:00",
+        "timezone": "Asia/Shanghai",
+        "systemRecommendation": {
+          "sceneName": "睡眠",
+          "reason": "系统候选",
+          "source": "legacy_recommended_scene"
+        },
+        "sceneSemantics": {
+          "currentScene": "not_provided",
+          "systemRecommendation": "weak_suggestion",
+          "potentialIntent": "not_provided"
+        },
+        "health": {
+          "pressure": {
+            "level": null,
+            "levelLabel": null
+          }
+        }
+      },
+      "rawExplanation": "《星落》以温暖的原声吉他和轻柔鼓点营造极简氛围，节奏平稳、不催促，适合轻轻放缓状态；可以跟着鼓点慢慢呼吸。",
+      "finalExplanation": "《星落》以温暖的原声吉他和轻柔鼓点营造极简氛围，节奏平稳、不催促，适合轻轻放缓状态；可以跟着鼓点慢慢呼吸。",
+      "explanationPromptContext": {
+        "localTime": "2026-10-14T12:30:00+08:00",
+        "timezone": "Asia/Shanghai",
+        "energyGoal": "lower",
+        "systemRecommendation": {
+          "sceneName": "睡眠",
+          "reason": "系统候选",
+          "source": "legacy_recommended_scene"
+        },
+        "sceneSemantics": {
+          "currentScene": "not_provided",
+          "systemRecommendation": "weak_suggestion",
+          "potentialIntent": "not_provided"
+        },
+        "health": {
+          "pressure": {
+            "level": null,
+            "levelLabel": null
+          }
+        }
+      },
+      "checks": []
+    },
+    {
+      "case": "explicit_lunch_break_scene",
+      "energyGoal": "lower",
+      "rawAssessment": "午休时用温暖、轻柔而仍有舒缓节拍的音乐，帮助你短暂放松、安静休息。",
+      "finalText": "午休时用温暖、轻柔而仍有舒缓节拍的音乐，帮助你短暂放松、安静休息。",
+      "assessmentPromptContext": {
+        "interactionMode": "scene",
+        "currentScene": {
+          "sceneName": "午休",
+          "source": "user_selected"
+        },
+        "systemRecommendation": {
+          "sceneName": "睡眠",
+          "reason": "相邻低能量候选",
+          "source": "system_recommendation"
+        },
+        "localTime": "2026-10-14T12:30:00+08:00",
+        "timezone": "Asia/Shanghai",
+        "sceneSemantics": {
+          "currentScene": "explicit_user_selected",
+          "systemRecommendation": "weak_suggestion",
+          "potentialIntent": "not_provided"
+        },
+        "health": {
+          "pressure": {
+            "level": null,
+            "levelLabel": null
+          }
+        }
+      },
+      "rawExplanation": "《星落》以温暖的原声吉他和轻柔鼓点铺出简约氛围，适合午休时放松片刻；可以配合几次缓慢的深呼吸。",
+      "finalExplanation": "《星落》以温暖的原声吉他和轻柔鼓点铺出简约氛围，适合午休时放松片刻；可以配合几次缓慢的深呼吸。",
+      "explanationPromptContext": {
+        "interactionMode": "scene",
+        "currentScene": {
+          "sceneName": "午休",
+          "source": "user_selected"
+        },
+        "systemRecommendation": {
+          "sceneName": "睡眠",
+          "reason": "相邻低能量候选",
+          "source": "system_recommendation"
+        },
+        "localTime": "2026-10-14T12:30:00+08:00",
+        "timezone": "Asia/Shanghai",
+        "energyGoal": "lower",
+        "sceneSemantics": {
+          "currentScene": "explicit_user_selected",
+          "systemRecommendation": "weak_suggestion",
+          "potentialIntent": "not_provided"
+        },
+        "health": {
+          "pressure": {
+            "level": null,
+            "levelLabel": null
+          }
+        }
+      },
+      "checks": []
+    },
+    {
+      "case": "auto_notification_intent_empty_contract",
+      "energyGoal": "boost",
+      "rawAssessment": "Gently lift the energy with a warm, lightly buoyant groove and clear, lively musical phrasing.",
+      "finalText": "Gently lift the energy with a warm, lightly buoyant groove and clear, lively musical phrasing.",
+      "assessmentPromptContext": {
+        "interactionMode": "auto",
+        "systemRecommendation": {
+          "sceneName": "Sleep",
+          "reason": "system candidate",
+          "source": "system_recommendation"
+        },
+        "potentialIntent": null,
+        "localTime": "2026-10-14T12:30:00-07:00",
+        "timezone": "America/Los_Angeles",
+        "sceneSemantics": {
+          "currentScene": "not_provided",
+          "systemRecommendation": "weak_suggestion",
+          "potentialIntent": "not_provided"
+        },
+        "health": {
+          "pressure": {
+            "level": null,
+            "levelLabel": null
+          }
+        }
+      },
+      "rawExplanation": "Starfall’s warm acoustic guitar and soft drum offer a gentle, steady pulse for a modest lift—try a few shoulder rolls along with it.",
+      "finalExplanation": "Starfall’s warm acoustic guitar and soft drum offer a gentle, steady pulse for a modest lift—try a few shoulder rolls along with it.",
+      "explanationPromptContext": {
+        "interactionMode": "auto",
+        "systemRecommendation": {
+          "sceneName": "Sleep",
+          "reason": "system candidate",
+          "source": "system_recommendation"
+        },
+        "potentialIntent": null,
+        "localTime": "2026-10-14T12:30:00-07:00",
+        "timezone": "America/Los_Angeles",
+        "energyGoal": "boost",
+        "sceneSemantics": {
+          "currentScene": "not_provided",
+          "systemRecommendation": "weak_suggestion",
+          "potentialIntent": "not_provided"
+        },
+        "health": {
+          "pressure": {
+            "level": null,
+            "levelLabel": null
+          }
+        }
+      },
+      "checks": []
+    }
+  ]
+}

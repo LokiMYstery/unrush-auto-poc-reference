@@ -1,6 +1,6 @@
 # Unrush Auto PoC：后端实现参考
 
-2026-10-09 的实现快照，供开发对照**提示词、Touchpad 内部检索、并行工具调用、音乐选择及回执后的 TTS**。iOS 对应基线是 `Qiyin-Tech/unrush-ios` 的 `codex/auto-poc-20261007`，固定 commit `280adf7b2c6861a54d755c5c1b512951af67dd82`。
+2026-10-14 的后端参考快照，供开发对照**提示词、Touchpad 内部检索、并行工具调用、音乐选择及回执后的 TTS**。iOS 对应基线是 `Qiyin-Tech/unrush-ios` 的 `codex/auto-poc-20261007`，固定 commit `d44650f0`。
 
 ## 阅读入口
 
@@ -63,7 +63,11 @@ Azure/OpenAI-compatible 的 `AGENT_MODEL_BASE_URL` 使用 `/openai/v1` 或对应
 ## 实现边界
 
 - 一个逻辑 run 包含 ASSESSMENT、SELECTION、等待原生回执、EXPLANATION；这些阶段可有多次模型请求，不等同于一次模型 API 调用。
-- 选曲成功不等于手机播放成功。成功说明以实际回执为准；失败和技术降级的消息不进入 TTS。
+- 选曲成功不等于手机播放成功。音乐解释以实际回执为准；失败和技术降级的消息不进入 TTS。
 - 健康算法在 iOS，本仓库接收摘要并处理音乐与表达。通知意图、连续感知和周期自动适配尚未接入这条 Auto 链路。
 - 当前 `music_profile_v2_2.music_retrieval_instruction()` 是未使用的 donor 辅助入口，引用外部 `instruction_loader_v2_2`；本仓库 Auto 的实际提示词由 `app/agent.py` 构建。
-- 本次发布只做源码一致性、公开内容与文档检查，沿用已有 PoC 验证结果，没有再进行手机或模拟器测试。
+- 本次同时将 2026-10-09 历史 Auto 快照更新为当前 Auto／Goal 共用后端，并加入场景来源与 TTS 修订。场景修改使用真实模型 smoke 验证及针对性回归；没有进行手机或模拟器测试，未部署。
+
+## 2026-10-14：场景来源与 TTS 更新
+
+区分系统推荐与用户当前场景。推荐只作弱参考，不能推断用户正在睡前；明确当前场景时多说音乐的场景帮助，能量轻提。Auto 预留通知潜在意图，当前为空。旧客户端字段不推断用户场景，新字段接入仍需同步。数据合同与验证见 [docs/scene-intent-contract.md](docs/scene-intent-contract.md)，完整规则见 [docs/prompt-templates.md](docs/prompt-templates.md)。
