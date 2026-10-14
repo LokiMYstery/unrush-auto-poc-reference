@@ -5,3 +5,5 @@
 本次变更：系统推荐仅弱参考，用户 currentScene 用于 TTS 场景帮助；不从音乐标签或推荐推断用户活动。删除每段强制能量用词，能量只有 boost/lower 且轻提。通知潜在意图只在 Auto 预留，当前空值。
 
 字段、优先级、客户端接入边界和 smoke 见 [场景合同](scene-intent-contract.md)。完整源码规则提取见 [实际模板](prompt-templates.md)。
+
+潜在意图语义修订：非空 Auto 通知输入是本次调节需求，音乐与具体轻建议要主动承接，如压力舒缓／放慢呼吸、日照／出去走走；不是泛化背景。见源码 NOTIFICATION_NEED_RULE。

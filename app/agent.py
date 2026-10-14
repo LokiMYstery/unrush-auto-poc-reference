@@ -56,11 +56,25 @@ MUSIC_VARIATION_RULE = (
 SCENE_SEMANTICS_RULE = (
     "Scene semantics are strict: context.currentScene exists only for interactionMode=scene after an explicit "
     "user selection, and may be used as the main TTS support anchor. context.systemRecommendation is only a weak "
-    "system suggestion, not evidence of the user's current activity. context.potentialIntent is notification-derived "
-    "Auto context; when null it means no notification intent is connected yet. Never infer bedtime, current activity "
+    "system suggestion, not evidence of the user's current activity. context.potentialIntent is a notification-derived "
+    "regulation need carried into Auto, not a weak scene recommendation; null means no such need is connected. Never infer bedtime, current activity "
     "or user intention from systemRecommendation or music sleep/relaxation tags. A lunch-break scene is a short "
     "daytime rest, not bedtime. localTime/timezone facts constrain speech. Do not mention these prohibitions, "
     "bedtime, sleep or sleepy as a disclaimer; simply describe daytime-compatible music."
+)
+
+
+NOTIFICATION_NEED_RULE = (
+    "Only in Auto, when context.potentialIntent is non-null, treat its summary/title/reason as the regulation need "
+    "that brought the user here. Actively connect the musical direction and one specific, optional light suggestion "
+    "to that need; do not merely acknowledge the notification or treat it as generic background. For a high-stress "
+    "notification, support settling and suggest slowing the breath; for a sunlight/outdoor need, suggest a short "
+    "walk outside or a moment in daylight, with music supporting that action. These are examples, not required "
+    "stock phrases. Use current available context and any supplied freshness to ground the advice; an old notification "
+    "is not a fresh health measurement. Do not invent notification needs when null, read out notification metadata, "
+    "repeat unchanged pressure/environment facts, or promise a medical effect. Explicit user feedback and verified "
+    "facts constrain the suggestion. Say how the music helps and offer the small action naturally, rather than "
+    "announcing an inferred intent or repeating energy."
 )
 
 
@@ -454,11 +468,12 @@ async def generate_assessment(context: dict[str, Any], current_playback: dict[st
             "When context.goalMode is true, make the user's goal title and current goalPhase the main anchor. The goal may be emotional care, companionship or venting; do not force productivity, completion, positivity, ongoing conversation, active listening, or therapeutic guarantees. Describe short musical support and at most one optional energy sentence.",
             "Follow context.environmentNarration: initial must briefly include available facts through the server's environmentLead, which is already part of this utterance. For ordinary Auto, do not repeat place, weather or body data after that lead; add the musical direction and, when context.currentScene exists, how the music helps that scene. For goalMode, return a natural short support description for the goal phase and optional energy direction. changed has only changedFields in that lead; music_only must not repeat weather, place, time of day, pressure, health or missing data. Focus on music and how it can help.",
             "Use health.pressure.levelLabel from StressLab; never speak a numeric pressure/stress score, rating, percent, or points. HRV labels and heart-rate estimate labels differ; retain the supplied label. Historical references must be identified as earlier data, never a current reading. When baselineReady is false or levelLabel is absent, do not assert a body-pressure state.",
-            "The server will prepend environmentLead to this same first utterance. For ordinary Auto, return a concise musical direction after that lead; if context.currentScene exists, include how the music helps that scene. For goalMode, return a concise phase support sentence and optional energy direction. Do not repeat weather, place, body reference or other facts.",
+            "The server will prepend environmentLead to this same first utterance. For ordinary Auto, return a concise musical direction after that lead; if context.currentScene exists, include how the music helps that scene. If potentialIntent is non-null, connect that direction to the notification regulation need and optionally a small action. For goalMode, return a concise phase support sentence and optional energy direction. Do not repeat weather, place, body reference or other facts.",
             "Never speak track/stem numbers or say keep the same song. Describe musical qualities instead.",
             "Choose exactly one of two directions: boost supports gently raising energy; lower supports lowering energy and settling. Do not choose maintain or a neutral third direction. This is a musical support intention, not a measured energy level or medical effect.",
             "For goalMode, the assessment may naturally contain zero or one explicit energy sentence. It should sound like a short opening for the phase, not a task-management command. Vary wording from goalContinuity.previousOpenings.",
             SCENE_SEMANTICS_RULE,
+            NOTIFICATION_NEED_RULE,
             "For ordinary Auto, anchor the utterance to the selected energy goal and intended musical qualities. Use at most one energy sentence; spend more of the sentence on how the music helps context.currentScene when it is present. For goalMode, anchor to the phase and musical support; energy wording is optional. Do not announce the current song or current playback. Do not name an unknown next song before retrieval.",
             "Submit the set_energy_goal function with energyGoal and one concise user-language assessment.",
         ],
@@ -764,6 +779,7 @@ async def generate_explanation(
             "Use actual receipt internally to ground the music description; never narrate operation status.",
             "When playback succeeds, briefly connect the actual music profile and recorded selection rationale to the current environment, explicit currentScene or user request; do not merely announce the song title.",
             SCENE_SEMANTICS_RULE,
+            NOTIFICATION_NEED_RULE,
             "When context.goalMode is true, explain the selected music through context.goal.title and context.goalPhase.title first. Do not mention energy/能量 here; explanation should be one short music phrase plus one concrete optional light suggestion. Avoid repeating any prior suggestion in alreadySpokenGoalExplanations. Do not imply the app is listening to the user speak or will continue a conversation.",
             "Use public-facing musical qualities. Do not mention internal resource-binding scenes, tool names, database IDs, or claim that a model rationale overrides the actual receipt.",
             "Failed/degraded outcomes remain silent. Do not announce either success or failure.",
@@ -943,13 +959,14 @@ async def model_select_with_retrieval_tools(
                         SPEECH_STYLE_RULE,
                         MUSIC_VARIATION_RULE,
                         SCENE_SEMANTICS_RULE,
+                        NOTIFICATION_NEED_RULE,
                         "Only when toolAvailability.supportsTouchpad is true, prefer an internal track adjustment when it fits the target; choose another song when the internal set is not a good fit or Explore requests another song.",
                         "Ordinary Refine stays inside the current Touchpad carrier and may change instrumentation, groove or timbre across its nine profiles. With no Touchpad, Refine chooses a different carrier. Explore and the Goal music-adjustment button (goalFeedback) always choose a different carrier; the entire current carrier is excluded from retrieval and selection for those requests. Automatic adaptation without feedback retains internal Touchpad preference. Keep is handled by the client without a new selection.",
                         "Retrieval tools may run in parallel. Internal preference is a comparison/selection rule, not a ban on parallel library search.",
                         "Include one short user-facing rationale comparing the chosen candidate to current/internal options; do not return private reasoning.",
                         "In the public rationale describe musical changes and help, never track numbers or keep the same song.",
                         "Use context.energyGoal as the anchor for musical search/ranking: boost raises energy, lower lowers energy. Compare with currentTrustedProfile internally, but public speech names only target music/qualities.",
-                        "Treat context.currentScene as the explicit scene anchor only when present; it may influence ranking and public rationale. Treat context.systemRecommendation as weak context for candidate diversity/ranking, not as proof of what the user is doing. Treat context.potentialIntent as a notification-derived Auto hint when present or null when notifications are not connected.",
+                        "Treat context.currentScene as the explicit scene anchor only when present; it may influence ranking and public rationale. Treat context.systemRecommendation as weak context for candidate diversity/ranking, not as proof of what the user is doing. Treat context.potentialIntent as the notification-carried regulation need in Auto: use it to guide music support and a concrete light suggestion; null means no notification need is connected.",
                         "When context.goalMode is true, goal.title and goalPhase.title are the primary intent. Goal mode may choose across the full recalled library and must not apply ordinary Refine hard limits to the current carrier. Touchpad internal adjustment is useful only when it best supports the goal phase.",
                         "For goalMode, avoid repeating any carrier/service song listed in context.goalUsedServiceSongIds when enough validated alternatives exist. If resources are insufficient, repeats are allowed only with a clear public rationale.",
                         "For goalMode, submit energyGoal, openingText and postReceiptText with the selected music. openingText is the phase-opening TTS: natural care or goal support, at most one energy sentence. postReceiptText is a shorter after-playback line: one music phrase plus one concrete optional light suggestion, no energy/能量 and no repeated prior suggestion from context.goalSpokenExplanations.",
